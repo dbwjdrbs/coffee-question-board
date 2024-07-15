@@ -58,8 +58,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/*/members").permitAll()
                         .antMatchers(HttpMethod.POST, "/*/questionboard").hasAnyRole("USER", "ADMIN")
-                        .antMatchers(HttpMethod.GET, "/*/questionboard/**").hasAnyRole("USER", "ADMIN")
-                        .antMatchers(HttpMethod.POST, "/*/likes").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/*/questionboard/*").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.GET, "/*/questionboard").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.POST, "/*/likes").hasAnyRole("USER", "ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/*/questionboard/*").hasRole("USER")
                         .anyRequest().permitAll()
                 );
         return http.build();
@@ -93,7 +95,9 @@ public class SecurityConfiguration {
 
             JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
-            builder.addFilter(jwtAuthenticationFilter).addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+            builder
+                    .addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
     }
 

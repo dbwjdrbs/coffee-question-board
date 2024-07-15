@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,10 @@ public class QuestionBoardController {
     }
 
     @PostMapping
-    public ResponseEntity postQuestionBoard(@Valid @RequestBody QuestionBoardDto.Post requestBody) {
+    public ResponseEntity postQuestionBoard(@Valid @RequestBody QuestionBoardDto.Post requestBody,
+                                            Authentication authentication) {
         QuestionBoard questionBoard = mapper.questionBoardPostToQuestionBoard(requestBody);
-        QuestionBoard createdQuestionBoard = questionBoardService.createQuestionBoard(questionBoard);
+        QuestionBoard createdQuestionBoard = questionBoardService.createQuestionBoard(questionBoard, authentication);
         URI location = UriCreator.createUri(QUESTION_BOARD_URL, createdQuestionBoard.getQuestionBoardId());
         log.info("=".repeat(60));
         log.info("게시물 생성 완료 : " + createdQuestionBoard);
@@ -70,7 +72,8 @@ public class QuestionBoardController {
 
 
     @DeleteMapping("/{questionBoard-id}")
-    public void deleteQuestionBoard(@PathVariable("questionBoard-id") @Positive long questionBoardId) {
-        questionBoardService.deleteQuestionBoard(questionBoardId);
+    public void deleteQuestionBoard(@PathVariable("questionBoard-id") @Positive long questionBoardId,
+                                    Authentication authentication) {
+        questionBoardService.deleteQuestionBoard(questionBoardId, authentication);
     }
 }

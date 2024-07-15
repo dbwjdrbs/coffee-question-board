@@ -7,7 +7,8 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     BOARD_NOT_FOUND(404, "Board not found"),
     BOARD_EXISTS(409, "Board exists"),
-    LIKE_EXISTS(409, "Like exists");
+    LIKE_EXISTS(409, "Like exists"),
+    UNAUTHORIZED_USER(401, "unauthorized user");
 
     @Getter
     private int status;

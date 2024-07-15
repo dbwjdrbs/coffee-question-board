@@ -40,8 +40,14 @@ public class MemberService {
 
     public void verifyExistsEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        if(optionalMember.isPresent()){
+        if (optionalMember.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
         }
+    }
+
+    public Member verifyExistsMember(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        return optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 }

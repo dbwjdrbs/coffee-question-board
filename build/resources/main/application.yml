@@ -19,7 +19,7 @@ spring:
     oauth2:
       client:
         registration:
-         
+
 mail:
   address:
    admin: admin@gmail.com
